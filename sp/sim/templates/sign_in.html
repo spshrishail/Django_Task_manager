@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Deeper shadow for depth */
+            padding: 25px 30px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-top: 20px;
+            padding-left: 0;
+            text-align: left;
+        }
+
+        ul li {
+            margin: 10px 0;
+            padding: 12px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: #007BFF;
+            transition: color 0.2s ease;
+        }
+
+        ul li a:hover {
+            color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            margin-top: 10px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .g_id_signin {
+            margin-top: 30px;
+        }
+
+        .g_id_signin button {
+            border-radius: 50px;
+        }
+
+        button, .g_id_signin {
+            cursor: pointer;
+        }
+
+        .sign-in-info {
+            margin-top: 20px;
+            color: #007BFF;
+            font-size: 14px;
+        }
+
+        .sign-in-info a {
+            font-weight: bold;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            ul li {
+                font-size: 14px;
+            }
+
+            .g_id_signin button {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    {% if request.session.user_data %}
+    <div class="container">
+        <h1>Tasks</h1>
+        <a href="{% url 'task_create' %}">Create Task</a>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <a>{{ task.title }}</a>
+                    <a href="{% url 'task_edit' task.pk %}">Edit</a>
+                    <a href="{% url 'task_delete' task.pk %}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <div class="container">
+        <h1>Welcome Back!</h1>
+        <p>Hi there 🙂</p>
+        <p>Click below to sign in with Google</p>
+
+        <div id="g_id_onload"
+            data-client_id="593141962971-09htg2s9kkqlajotpdhg51gp0ip3h2hr.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="redirect"
+            data-login_uri="http://localhost:8000/auth-receiver"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="pill"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="large"
+            data-logo_alignment="left">
+        </div>
+
+        
+    </div>
+    {% endif %}
+
+</body>
+</html>
